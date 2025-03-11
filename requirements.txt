@@ -5,5 +5,7 @@ motor
 PyJWT
 passlib[bcrypt]
 qiskit
+numpy
 python-dotenv
 python-multipart
+pycryptodome

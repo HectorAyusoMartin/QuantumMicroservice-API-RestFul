@@ -1,6 +1,4 @@
 .env
-memory.txt
-skeleton.txt
 venv
 testing.py
 
