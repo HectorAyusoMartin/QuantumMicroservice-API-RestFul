@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+motor
+PyJWT
+passlib[bcrypt]
+qiskit
+python-dotenv
+python-multipart
