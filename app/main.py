@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app.config import MONGO_URI , JWT_SECRET
 from app.routers import auth, users, quantum_random, keys
 
-app = FastAPI(title="Microservicio de generación de aleatoriedad cuántica")
+app = FastAPI(title="Microservicio. FastApi. Mongo DB ATLAS. Oauth2|JWT. Qiskit. Generación de aleatoriedad cuántica.")
 
 app.include_router(auth.router,prefix="/auth",tags=["Autenticación"])
 app.include_router(users.router,prefix="/users",tags=["Usuarios"])
