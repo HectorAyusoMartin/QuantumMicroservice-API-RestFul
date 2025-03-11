@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 
-@router.post("/login")
+@router.post("/login",summary="Autentifica un usuario de la base de datos y devuelve un token JWT")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """
     Endpoint para iniciar sesion.

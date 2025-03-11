@@ -11,12 +11,21 @@ app.include_router(keys.router,prefix="/keys",tags=["Generador de claves seguras
 
                    
                    
-@app.get("/")
+@app.get("/",tags=["Inicio"],summary="Pruebas/Testing")
 async def root():
+    
+   
+    
     return{
+        
         "meesage":"El microservicio está funcionando",
         "mongo_uri": MONGO_URI,
         "jwt_secret": JWT_SECRET
+        
     }
 
 
+
+    
+    
+          

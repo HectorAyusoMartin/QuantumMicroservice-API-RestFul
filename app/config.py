@@ -13,3 +13,4 @@ MONGO_URI = os.getenv("MONGO_URI")
 JWT_SECRET = os.getenv("JWT_SECRET")
 
 
+print("llego hasta aqui")
