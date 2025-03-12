@@ -5,6 +5,7 @@ motor
 PyJWT
 passlib[bcrypt]
 qiskit
+qiskit-aer
 numpy
 python-dotenv
 python-multipart
