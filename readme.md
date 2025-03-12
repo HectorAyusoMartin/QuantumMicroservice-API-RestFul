@@ -6,4 +6,4 @@ PROYECTO DE MICROSERVICIO:  FastAPI | MongoDB ATLAS | Qiskit | CRUD | oAuth2 + J
 ![T4](/statics/jwt.jpg)
 ![T5](/statics/qiskit.png)
 ![T6](/statics/docker.png)
-![T6](/statics/railway.png)
+![T6](/statics/render.jpg)
