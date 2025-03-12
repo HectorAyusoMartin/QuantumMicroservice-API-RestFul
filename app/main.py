@@ -21,11 +21,6 @@ app.mount("/statics", StaticFiles(directory="statics"), name="statics")
 
 
 
-
-
-
-
-
 app.mount("/", StaticFiles(directory=static_dir, html=True), name="landing")
 
 

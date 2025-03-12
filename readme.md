@@ -2,6 +2,8 @@ PROYECTO DE MICROSERVICIO:  FastAPI | MongoDB ATLAS | Qiskit | CRUD | oAuth2 + J
 
 Enlace al proyecto desplegado --> https://quantum-microservice.onrender.com
 
+Documentación del proyecto disponible en /statics/documentacion.pdf
+
 ![T1](/statics/fastapi.png)
 ![T2](/statics/mongo.webp)
 ![T3 ](/statics/crud.webp)

@@ -20,7 +20,6 @@ async def test_register_user():
     - Luego, usa el token para crear un usuario nuevo en `POST /users/`.
     """
 
-    # 1️⃣ Login como admin para obtener el token
     response = client.post(
         "/auth/login",
         data={"username": "admin", "password": "1234"}
@@ -30,7 +29,7 @@ async def test_register_user():
     token = response.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
 
-    # 2️⃣ Usar el token para crear un nuevo usuario
+   
     response = client.post(
         "/users/",
         json={"username": "testuser", "password": "testpassword"},
@@ -38,5 +37,5 @@ async def test_register_user():
     )
 
     assert response.status_code == 201, response.text
-    assert "id" in response.json()  # Verificar que devuelve un ID de usuario
+    assert "id" in response.json() 
 
