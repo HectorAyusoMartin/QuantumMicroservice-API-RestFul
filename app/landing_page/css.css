@@ -1,0 +1,109 @@
+
+body {
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+    line-height: 1.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 26px;
+}
+
+.logo-container {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.logo-container img {
+    max-width: 250px;
+    height: auto;
+    border-radius: 40px;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgb(206, 225, 233);
+    border-radius: 12px;
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+section {
+    margin-bottom: 60px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+h1, h2 {
+    color: #002a5c;
+    margin-bottom: 25px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.tech-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 30px;
+}
+
+.tech-icons img {
+    width: 70px;
+    height: auto;
+}
+
+
+p {
+    font-size: 18px;
+    color: #444;
+    text-align: justify;
+    margin-bottom: 25px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+ul li {
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 25px;
+    }
+    h1 {
+        font-size: 26px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    p {
+        font-size: 17px;
+    }
+}
