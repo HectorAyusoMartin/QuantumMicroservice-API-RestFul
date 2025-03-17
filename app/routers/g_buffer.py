@@ -1,7 +1,7 @@
 """
 
 Endpoints mejorados haciendo uso de un global buffer para mejorar la rapidez de respuesta de las peticiones
-
+# TODO: omplementar el [buffer] para los metodos existentes de los disntintos endpoints
 
 """
 
@@ -61,6 +61,8 @@ def get_bits_from_buffer(n:int)->list:
     
     
     global global_buffer #-> para acceder a global buffer
+    
+    
     
     with buffer_lock:
         if len(global_buffer) < n:

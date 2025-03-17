@@ -12,7 +12,7 @@ criptográficos.
 
 
 from fastapi import APIRouter, HTTPException, status, Query
-from g_buffer import *
+#from .g_buffer import *
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
 import sympy
