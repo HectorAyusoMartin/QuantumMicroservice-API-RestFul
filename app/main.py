@@ -8,6 +8,8 @@ import os
 
 app = FastAPI(title="Microservicio | APIRest. FastApi. Mongo DB ATLAS. Oauth2JWT. Qiskit. Docker. Render.")
 
+g_buffer.start_buffer_thread() # --> Inicia el Daemon de la carga de buffer en segundo plano
+
 app.include_router(auth.router,prefix="/auth",tags=["Autenticación"])
 app.include_router(users.router,prefix="/users",tags=["Usuarios"])
 app.include_router(quantum_random.router,prefix="/random",tags=["Aleatoriedad cuántica(QRNG)"])
@@ -27,10 +29,14 @@ app.mount("/", StaticFiles(directory=static_dir, html=True), name="landing")
 
                    
 @app.get("/",summary="Carga el Landing Page.",tags=["Página de inicio"])
+
 def serve_index():
+    
     return FileResponse(os.path.join(static_dir, "index.html"))
 
 
-    
+
+
+     
     
           

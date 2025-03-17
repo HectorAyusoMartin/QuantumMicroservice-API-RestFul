@@ -12,9 +12,9 @@ criptográficos.
 
 
 from fastapi import APIRouter, HTTPException, status, Query
-#from .g_buffer import *
+from .g_buffer import get_bits_from_buffer
 from qiskit import QuantumCircuit, transpile
-from qiskit_aer import AerSimulator
+from qiskit_aer import AerSimulator #Borrar si no se usa!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 import sympy
 from Crypto.PublicKey import RSA
 
@@ -31,25 +31,7 @@ def generate_qubit()->int:
     
     """
     
-    qc = QuantumCircuit(1,1)
-    qc.h(0)
-    qc.measure(0,0)
-    
-    transpile_qc = transpile(qc,simulator)
-    result = simulator.run(transpile_qc,shots=1).result()
-    n = result.get_counts()
-   
-    try:
-        n = next(iter(n))
-        
-    except:
-        
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Qubit no encontrado")
-    
-   
-    print(n)
-    
-    return int(n)
+    return get_bits_from_buffer(1)[0]
 
 def generate_qiskit_bytes(size: int):
     """
@@ -57,11 +39,14 @@ def generate_qiskit_bytes(size: int):
     Genera una cantidad de bytes aleatorios usando qubits en superposición.
     
     """
-    
-    bits = [generate_qubit() for _ in range(size * 8)]  # Genera 8 bits por cada byte
-    byte_array = [int("".join(map(str, bits[i:i+8])), 2) for i in range(0, len(bits), 8)]
-    bytes_response = bytes(byte_array)
-    print(bytes_response)
+    total_bits = size * 8
+    bits = get_bits_from_buffer(total_bits)
+    byte_array = [
+        
+        int("".join(map(str,bits[i:i+8])),2)
+        for i in range(0,total_bits,8)
+    ]
+
     return bytes(byte_array)
 
 def generate_qiskit_prime(bits: int):
@@ -89,18 +74,17 @@ def generate_aes_key(size: int = Query(32, description="Tamaño de la clave en b
     key = generate_qiskit_bytes(size)
     return {"aes_key": key.hex()}
 
-@router.get("/rsa",summary="Genera un par de claves RSA con aleatoriedad cuántica.")
-def generate_rsa_key():
+#@router.get("/rsa", summary="Genera un par de claves RSA con aleatoriedad cuántica.")
+#def generate_rsa_key():
     """
-    Genera un par de claves RSA de 2048 bits con aleatoriedad cuántica.
-    
+    Genera un par de claves RSA de 2048 bits usando bits del buffer global.
     """
-    p = generate_qiskit_prime(1024)
-    q = generate_qiskit_prime(1024)
-    key = RSA.construct((p * q, 65537))  # Clave RSA generada manualmente con Qiskit
-    private_key = key.export_key().decode()
-    public_key = key.publickey().export_key().decode()
-    return {"rsa_private_key": private_key, "rsa_public_key": public_key}
+    #p = generate_qiskit_prime(1024)
+    #q = generate_qiskit_prime(1024)
+    #key = RSA.construct((p * q, 65537))
+    #private_key = key.export_key().decode()
+    #public_key = key.publickey().export_key().decode()
+    #return {"rsa_private_key": private_key, "rsa_public_key": public_key}
 
 @router.get("/uuid",summary="Genera un UUID aleatorio con aleatoriedad cuántica")
 def generate_uuid():
@@ -110,6 +94,7 @@ def generate_uuid():
     """
     uuid_bytes = generate_qiskit_bytes(16)  
     return {"uuid": uuid_bytes.hex()}
+
 
 @router.get("/otp",summary="Genera una clave secreta para OTP con aleatoriedad cuántica.")
 def generate_otp_secret():

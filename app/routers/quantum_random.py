@@ -8,6 +8,7 @@ Actualmente se usa la simulación con Qiskit Aer por alta latencia de los servid
 from fastapi import APIRouter, HTTPException, status, Query
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
+from .g_buffer import *
 
 
 
@@ -58,7 +59,7 @@ def get_random_bit()->dict:
     Devuelve un diciconario{} con un bit aleatorio (0 o 1), usando aleatoriedad cuántica desde un QPU de IBM.
     
     """
-    return {"random_bit": generate_qubit()}
+    return {"random_bit":get_bits_from_buffer(1)}
 
 @router.get("/range")
 def get_random_number(min: int = Query(0), max: int = Query(100)):
@@ -66,19 +67,20 @@ def get_random_number(min: int = Query(0), max: int = Query(100)):
     """
     Devuelve un número aleatorio cuántico dentro de un rango dado en la query.
     
-    Ejemplo --> */random/range?min=11&max=50
-    
+    Ejemplo --> /random/range?min=11&max=50
     """
     if min >= max:
         raise HTTPException(status_code=400, detail="El valor mínimo debe ser menor que el máximo.")
     
     range_size = max - min
-    num_bits = range_size.bit_length()  
-    bits = [generate_qubit() for _ in range(num_bits)]  
-    random_number = min + int("".join(map(str, bits)), 2) % range_size  
+    num_bits = range_size.bit_length()
     
+    # Extraemos los bits necesarios del buffer, en lugar de generarlos individualmente
+    bits = get_bits_from_buffer(num_bits)
+    
+    random_number = min + int("".join(map(str, bits)), 2) % range_size
     return {"random_number": random_number}
-
+    
 @router.get("/bits")
 def get_random_bits(size: int = Query(8)):
     
@@ -88,7 +90,8 @@ def get_random_bits(size: int = Query(8)):
     Ejmplo --> */random/bits?size=16
     
     """
-    bits = "".join(str(generate_qubit()) for _ in range(size))
+    bits_list = get_bits_from_buffer(size)
+    bits = "".join(str(b) for b in bits_list)
     return {"random_bits": bits}
 
 @router.get("/bytes")
@@ -115,9 +118,6 @@ def get_random_float():
     fraction = sum(bit * (2 ** -i) for i, bit in enumerate(bits, 1))
     
     return {"random_float": fraction}
-
-#Funciones Criptograficas:
-
 
 
 
