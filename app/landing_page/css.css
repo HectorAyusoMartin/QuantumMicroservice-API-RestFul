@@ -1,6 +1,7 @@
 
 body {
     font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-image: url('app/landing_page/back.webp');
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
@@ -91,19 +92,27 @@ a:hover {
 }
 
 
-/* Estilos responsive */
 @media (max-width: 768px) {
+    body {
+        font-size: 16px; /* Disminuye la fuente del cuerpo para adaptar más texto */
+    }
     .container {
-        width: 95%;
-        padding: 25px;
+        width: 85%;
+        padding: 20px; /* Menos padding para más espacio de texto */
     }
-    h1 {
-        font-size: 26px;
+    .logo-container img {
+        width: 80%; /* Ajusta el logo para que no ocupe demasiado espacio */
+        margin: 20px 0; /* Añade margen arriba y abajo del logo */
     }
-    h2 {
-        font-size: 22px;
+    h1, h2 {
+        font-size: 22px; /* Reduce el tamaño de los títulos para adaptar el espacio */
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
-    p {
-        font-size: 17px;
+    p, li {
+        font-size: 16px; /* Texto más pequeño en párrafos y listas */
+    }
+    .tech-icons img {
+        width: 50px; /* Iconos más pequeños */
     }
 }
