@@ -116,4 +116,11 @@ a:hover {
     .tech-icons img {
         width: 50px; /* Iconos más pequeños */
     }
+    .container img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+    }
+    
 }
