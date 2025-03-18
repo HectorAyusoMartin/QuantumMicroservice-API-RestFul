@@ -13,14 +13,20 @@ criptográficos.
 
 from fastapi import APIRouter, HTTPException, status, Query
 from .g_buffer import get_bits_from_buffer
-from qiskit import QuantumCircuit, transpile
+from qiskit import QuantumCircuit, transpile, QuantumRegister, ClassicalRegister
 from qiskit_aer import AerSimulator #Borrar si no se usa!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+from qiskit.circuit.library import QFT
 import sympy
 from Crypto.PublicKey import RSA
+import numpy as np
+import random
 
 
 router = APIRouter()
 simulator = AerSimulator()
+
+#==============================================================================================================================================================================
+
 
 def generate_qubit()->int:
     
@@ -60,6 +66,49 @@ def generate_qiskit_prime(bits: int):
         if sympy.isprime(candidate):
             return candidate
 
+def generate_full_entropy_qc(num_qubits:int)->QuantumCircuit:
+    """
+    Esta función crea un circuito de alta altropia. Usa superposición de qubits, entrelazamiento,
+    variaciones de estados basicos, rotaciones aleatorias del eje Z, y aplicación de la trasformada
+    cuántica de Fourier.
+    """
+    # Crear registros cuánticos y clásicos para evitar errores de indexación
+    qreg = QuantumRegister(num_qubits, 'q')
+    creg = ClassicalRegister(num_qubits, 'c')
+    qc = QuantumCircuit(qreg, creg)
+    
+    # 1. Poner todos los qubits en superposición con Hadamard
+    for i in range(num_qubits):
+        qc.h(qreg[i])
+        
+    # 2. Entrelazar los qubits en cadena con puertas CNOT
+    for i in range(num_qubits - 1):
+        qc.cx(qreg[i], qreg[i+1])
+        
+    # 3. Agregar compuertas de fase aleatorias (S, T) y rotación Z para cada qubit
+    for i in range(num_qubits):
+        if random.choice([True, False]):
+            qc.s(qreg[i])
+        if random.choice([True, False]):
+            qc.t(qreg[i])
+        angle = np.random.uniform(0, 2*np.pi)
+        qc.rz(angle, qreg[i])
+    
+    # 4. Aplicar QFT para mezclar aún más la entropía
+    qft_circuit = QFT(num_qubits)
+    qc.append(qft_circuit.to_instruction(), qreg)
+    
+    # Medir todos los qubits para extraer la semilla
+    qc.measure(qreg, creg)
+    
+    return qc
+    
+    
+
+
+# =============================================================================================================================================================================
+
+
 @router.get("/aes",summary="Genera una clave AES con aleatoriedad cuántica.")
 def generate_aes_key(size: int = Query(32, description="Tamaño de la clave en bytes (16, 24 o 32)")):
     """
@@ -95,7 +144,6 @@ def generate_uuid():
     uuid_bytes = generate_qiskit_bytes(16)  
     return {"uuid": uuid_bytes.hex()}
 
-
 @router.get("/otp",summary="Genera una clave secreta para OTP con aleatoriedad cuántica.")
 def generate_otp_secret():
     """
@@ -106,15 +154,38 @@ def generate_otp_secret():
     
     return {"otp_secret": otp_bytes.hex()}
 
+@router.get("/seed",summary="Genera una semilla con máxima entropía, utilizando un circuito cuántico con fases de superposicíon, entrelazamiento, compuertas de fase aleatorias y una trasformada cuántica de Fourier")
+def generate_seed(num_qubits:int = 24)->dict:
+    
+    """
+    """
 
+    qc = generate_full_entropy_qc(num_qubits)
+    transpile_qc = transpile(qc,simulator)
+    result = simulator.run(transpile_qc,shots=1).result()
+    counts = result.get_counts()
+    seed = list(counts.keys())[0]
+    
+    seed_hex = "qrs_" + format(int(seed, 2), f'0{num_qubits//4}x')
 
+    
+    if not seed:
+        return {"quantic_random_seed":"error"}
+    
+    return {"quantic_random_seed": seed_hex}
+
+# =============================================================================================================================================================================
 
 
 if __name__ == "__main__":
     
     print("[+] O.K : Todo funcionando")
     
-    generate_qiskit_bytes(10)
+    qc1 = generate_full_entropy_qc(8)
+    
+    print(type(qc1))
+    
+   
     
     
 

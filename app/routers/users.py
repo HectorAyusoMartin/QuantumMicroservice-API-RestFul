@@ -13,7 +13,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return {"username": current_user.username}
 
 
-@router.post("/",summary="Crea un nuevo Usuario")
+@router.post("/",summary="Crea un nuevo Usuario en la base de datos")
 async def create_new_user(user: dict, current_user: User = Depends(get_current_user)):
     if current_user.username != "admin":
         raise HTTPException(status_code=403, detail="No tienes permisos para crear usuarios")

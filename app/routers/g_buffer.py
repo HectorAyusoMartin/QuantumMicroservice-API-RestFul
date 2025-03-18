@@ -125,7 +125,7 @@ def get_bits_from_buffer(n:int)->list:
 
 # Funciones / operaciones de endpoints
 
-@router.get("/bytes")
+@router.get("/test",summary="Test de prueba de funcionamiento del buffer. Devuelve Bytes en hexadecimal.")
 def get_random_bytes(size: int = Query(8)):
     
     """
@@ -135,6 +135,7 @@ def get_random_bytes(size: int = Query(8)):
     
     total_bits = size * 8
     bits = []
+    test = False
     
     # Ahora recolectamos bits hasta alcanzar la cantidad requerida
     
@@ -145,9 +146,12 @@ def get_random_bytes(size: int = Query(8)):
     
     byte_array = [int("".join(map(str, bits[i:i+8])), 2) for i in range(0, len(bits), 8)]
     
-    return {"random_bytes": bytes(byte_array).hex()}
+    if byte_array:
+        test = True
+    
+    return {"tets_random_bytes": bytes(byte_array).hex()},{"Buffer funcionando correctamente":test}
 
-@router.get("/buffer_state",summary="Devuelve el estado del buffer")
+@router.get("/state",summary="Devuelve el estado del buffer")
 def info():
    
 
@@ -157,14 +161,14 @@ def info():
     return {"buffer_length": current_buffer_length}
 
 
-@router.get("/buffer_on",summary="Inicializa el buffer")
+@router.get("/on",summary="Inicializa el buffer")
 def on()->dict:
     
     start_buffer_thread()
     
     return {"Estado del buffer: Activado": True}
 
-@router.get("/buffer_off",summary="Detiene el buffer")
+@router.get("/off",summary="Detiene el buffer")
 def off()->dict:
     
     buffer_stop_event = threading.Event()

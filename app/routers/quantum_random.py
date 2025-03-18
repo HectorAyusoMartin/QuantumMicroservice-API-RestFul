@@ -52,7 +52,7 @@ def generate_qubit()->int:
     
     
 #Funciones Aleatoriedad:
-@router.get("/basic")
+@router.get("/basic",summary="Devuelve un bit aleatorio de alta entropía en formato JSON")
 def get_random_bit()->dict:
     
     """
@@ -61,7 +61,7 @@ def get_random_bit()->dict:
     """
     return {"random_bit":get_bits_from_buffer(1)}
 
-@router.get("/range")
+@router.get("/range",summary="Devuelve un bit aleatorio dentro de un rango, especificando un máximo y un mínimo en formato JSON")
 def get_random_number(min: int = Query(0), max: int = Query(100)):
     
     """
@@ -81,7 +81,7 @@ def get_random_number(min: int = Query(0), max: int = Query(100)):
     random_number = min + int("".join(map(str, bits)), 2) % range_size
     return {"random_number": random_number}
     
-@router.get("/bits")
+@router.get("/bits",summary="Devuelve una cadena de bits de una longitud detarminada en la consulta en formato JSON.")
 def get_random_bits(size: int = Query(8)):
     
     """
@@ -94,7 +94,7 @@ def get_random_bits(size: int = Query(8)):
     bits = "".join(str(b) for b in bits_list)
     return {"random_bits": bits}
 
-@router.get("/bytes")
+@router.get("/bytes",summary="Devuelve una cadena de Bytes de una longitud determinada en la consulta en formato JSON")
 def get_random_bytes(size: int = Query(8)):
     
     """
@@ -107,8 +107,8 @@ def get_random_bytes(size: int = Query(8)):
     
     return {"random_bytes": bytes(byte_array).hex()}
 
-@router.get("/float")
-def get_random_float():
+@router.get("/float",summary="Devuelve un numero decimal aleatorio de alta entropía en formato JSON")
+def get_random_float()->dict:
     """
     Devuelve un número flotante aleatorio entre 0 y 1 basado en qubits.
     
@@ -119,7 +119,16 @@ def get_random_float():
     
     return {"random_float": fraction}
 
-
+@router.get("/bool",summary="Devuelve un booleano condicional aleatorio en formato JSON")
+def get_bool()->dict:
+    
+    bit = get_bits_from_buffer(1)
+    response = False
+    print(bit)
+    if bit == [1]:
+        response = True
+    
+    return {"random_boolean":response}
 
 if __name__ == "__main__":
     
